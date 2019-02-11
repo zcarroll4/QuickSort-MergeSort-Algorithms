@@ -1,0 +1,208 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Code {
+
+	int mergeComparisions;
+	int mergeMoves;
+	static int[] numbersArray = new int[1024]; //Hard code size of array for QuickSort
+	static int[] numbersArray2 = new int[1024]; //Reverse order of array for QuickSort
+	static int[] numbersArray3 = new int[1024]; //Array for Merge Sort
+	
+//**************************************************************************************************************************
+//Main Function
+	public static void main(String[] args) throws FileNotFoundException {
+		
+			Code code = new Code();
+			code.readInNumbersFromFile("1000Numbers.txt");    //read numbers from file method
+			
+			
+			System.out.println("Quicksort ");
+			code.doQuickSort(numbersArray);
+			code.reverseOrderArray(numbersArray2);
+			code.doQuickSort(numbersArray2);
+			
+			
+			System.out.println("Mergesort ");
+			code.doMergeSort(numbersArray3);
+			code.reverseOrderArray(numbersArray3);
+			code.doMergeSort(numbersArray3);
+
+	}
+//**************************************************************************************************************************
+//Read In File into Array Function
+	public void readInNumbersFromFile(String filename) throws FileNotFoundException {
+		//Read Numbers in from text file
+		Scanner readNumbers = new Scanner(new File(filename)); //Scanner to read numbers from text file
+		Scanner readNumbers2 = new Scanner(new File(filename)); //Scanner to read numbers from text file
+		Scanner readNumbers3 = new Scanner(new File(filename)); //Scanner to read numbers from text file
+
+			int i=0;
+			while(readNumbers.hasNextInt()) {
+				numbersArray[i++] = readNumbers.nextInt();			
+			}
+			
+			int z=0;
+			while(readNumbers2.hasNextInt()) {
+				numbersArray2[z++] = readNumbers2.nextInt();			
+			}
+			
+			int y=0;
+			while(readNumbers3.hasNextInt()) {
+				numbersArray3[y++] = readNumbers3.nextInt();			
+			}
+			
+			
+		readNumbers.close(); // Close Scanner
+		readNumbers2.close(); // Close Scanner
+		readNumbers3.close(); // Close Scanner
+		
+	}
+//**************************************************************************************************************************
+//Reverse Order of Array
+	public void reverseOrderArray(int[] array) {
+		int temp;
+		for (int i = 0; i < array.length/2; i++) {
+            temp = array[i];
+            
+            array[i] = array[array.length-1-i];
+            
+            array[array.length-1-i] = temp;
+        }
+        //System.out.println("Array Reversed: "+Arrays.toString(array));
+	}
+
+//**************************************************************************************************************************
+//Quick Sort
+//Worst Case O(n^2)
+//Avg Case O(nlogn)
+	public static int counter;
+	//Do QuickSort
+	public static void doQuickSort(int[]array) {
+		Code code = new Code();
+		code.quicksorti(array, 0, array.length - 1);
+		System.out.println(Arrays.toString(array));	
+		System.out.println("Total Number of Compares: "+ counter +"\n\n");	
+	}
+	public void quicksorti(int [] data, int min, int max) {
+		int pivot = 0;
+		if (min < max) {
+			pivot = partitioni(data,min,max);
+			
+			quicksorti(data,pivot+1,max);
+			quicksorti(data,min,pivot-1);
+		}
+	}
+	private void swapi(int [] data, int index1, int index2) {
+		int temp = data[index1];
+		//swaps++;
+		data[index1] = data[index2];
+		//swaps++;
+		data[index2] = temp;
+		//swaps++;
+	}
+	private int partitioni(int[]data,int min, int max) {
+		//select pivot.
+		int pivot = data[min];
+		int left = min;
+		int right = max;
+		
+		//everything to the left of pivot is less than pivot
+		//everything to the right of pivot is greater than pivot
+		
+		//1   2   3   <   5(Pivot) <    7    8    9 
+		
+		while(left < right) {
+			//move left to right
+			while(data[left]<= pivot && left < right) {
+				left++;	
+				counter++;
+			}
+			
+			//move right to left
+			while(data[right]>pivot) {
+				right--;
+				counter++;
+			}
+			
+			if (left<right) {
+				swapi(data,left,right);				
+			}
+		}
+		swapi(data,min,right);
+		//return pivot position
+		return right;	
+	}
+	
+	
+//**************************************************************************************************************************	
+//Merge Sort
+	public void doMergeSort(int[] array) {
+		Code code = new Code();
+		code.mergeSorti(array, 0, array.length - 1);
+		System.out.println(Arrays.toString(array));	
+		
+		System.out.println("Total Number of Compares: "+ mergeComparisions);
+		System.out.println("Total Number of M: "+ mergeMoves +"\n");		
+	}
+	
+	
+	public void mergeSorti(int[]data, int min, int max ) {
+		if(min < max) {
+			int mid = (min + max) / 2; //split point
+			mergeSorti(data,min,mid);
+			mergeMoves++;
+			mergeSorti(data,mid+1,max);
+			mergeMoves++;
+			mergei(data,min,mid,max); //merge does actual sorting
+			mergeMoves++;
+		}
+	}
+	public void mergei(int[]data, int first, int mid, int last) {
+		int [] temp = new int[data.length];
+		int first1 = first; //copy indeces for each subarray
+		int last1 = mid;
+		int first2 = mid + 1;
+		int last2 = last;
+		int index = first1;
+		
+		//go through, element be element, adding smallest to temp array
+		while(first1 <= last1 && first2<= last2) {
+			//put smallest of subarrays into the next array location
+			if(data[first1]< data[first2] ) {
+				if(index == 1024 || first == 1024) {
+					System.out.println("INDEX");
+				}
+				temp[index] = data[first1];
+				first++;				
+				mergeComparisions++;
+			} else {
+				temp[index] = data[first2];
+				first2++;
+				mergeComparisions++;
+			}
+			index++;
+		}
+		// if we finished one subarray, finish the remainder of the other
+		while(first1<=last1) {
+			temp[index]=data[first1];
+			first1++;
+			index++;
+			mergeComparisions++;
+		}
+		while(first2<=last2) {
+			temp[index]=data[first2];
+			first2++;
+			index++;
+			mergeComparisions++;
+		}
+		//copy temp over to original array
+		for(index=first;index<=last;index++) {
+			data[index]=temp[index];
+		}
+	}
+}
