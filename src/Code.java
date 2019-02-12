@@ -37,6 +37,8 @@ public class Code {
 			System.out.println("Quicksort on Sorted Array");
 			code.doQuickSort(numbersArray);
 			System.out.println("Reverse Order of Array Quicksort");
+			//code.reverseOrderArray(numbersArray2);
+			//code.doQuickSort(numbersArray2);
 			code.reverseOrderArray(numbersArray2);
 			code.doQuickSort(numbersArray2);
 			
@@ -247,7 +249,8 @@ public class Code {
 		System.out.println(Arrays.toString(array));	
 		mergeSorti(array, 0,array.length-1);		
 		System.out.println("Total Number of Compares: "+ NumberFormat.getNumberInstance(Locale.US).format(mergeComparisions));
-		System.out.println("Total Number of Moves: "+ NumberFormat.getNumberInstance(Locale.US).format(mergeMoves));
+		//System.out.println("Total Number of Moves: "+ NumberFormat.getNumberInstance(Locale.US).format(mergeMoves));
+		System.out.println("Total Number of Moves: "+ NumberFormat.getNumberInstance(Locale.US).format(mergeMoves*2));
 		System.out.println(Arrays.toString(array)+ "\n\n");	
 	}
 	public void mergeSorti(int[]data, int min, int max ) {
