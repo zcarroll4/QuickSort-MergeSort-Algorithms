@@ -32,15 +32,17 @@ public class Code {
 			/*int[] test = {7,5,3,4,2,6,1,8}; //best case - 24 compares
 			int[] test1 = {8,7,6,5,4,3,2,1}; //2nd worst case - 31 compares
 			int[] test2 = {1,2,3,4,5,6,7,8}; //worst case - 35 compares
-			code.doQuickSort(test2);*/
+			int[] test3 = {6,10,4,5,8,2}; //worst case - 35 compares
+			int[] test4 = {8,1,6,7,4,2,9}; //worst case - 35 compares
+			code.doQuickSort(test3);*/
 			code.doQuickSort(numbersArray);
 			System.out.println("Quicksort on Sorted Array");
 			code.doQuickSort(numbersArray);
 			System.out.println("Reverse Order of Array Quicksort");
 			//code.reverseOrderArray(numbersArray2);
 			//code.doQuickSort(numbersArray2);
-			code.reverseOrderArray(numbersArray2);
-			code.doQuickSort(numbersArray2);
+			code.reverseOrderArray(numbersArray);
+			code.doQuickSort(numbersArray);
 			
 			//Part 2
 			/*int[] test = {7,5,3,4,2,6,1,8}; //best worst avg- 24 moves
@@ -193,7 +195,7 @@ public class Code {
 		System.out.println(Arrays.toString(array)+ "\n\n");	
 
 	}
-	public void quicksorti2(String [] data, int min, int max) {
+	public void quicksorti2(Comparable [] data, int min, int max) {
 		int pivot = 0;
 		if (min < max) {
 			pivot = partitioni2(data,min,max);
@@ -203,14 +205,14 @@ public class Code {
 		}
 	}
 	
-	private void swapi2(String[] data, int index1, int index2) {
-		String temp = data[index1];
+	private void swapi2(Comparable[] data, int index1, int index2) {
+		Comparable temp = data[index1];
 		data[index1] = data[index2];
 		data[index2] = temp;
 	}
-	private int partitioni2(String[]data,int min, int max) {
+	private int partitioni2(Comparable []data,int min, int max) {
 		//select pivot.
-		String pivot = data[min];
+		Comparable pivot = data[min];
 		int left = min;
 		int right = max;
 		
@@ -221,18 +223,18 @@ public class Code {
 		
 		while(left < right) {
 			//move left to right
-			while(data[min].compareTo(pivot)<= 0 && left < right) {
+			while(data[left].compareTo(pivot)<= 0 && left < right) {
 				left++;	
 				counter++;
 			}
 			
 			//move right to left
-			while(data[min].compareTo(pivot)>0) {
+			while(data[right].compareTo(pivot)>0) {
 				right--;
 				counter++;
 			}
 			
-			if (data[min].compareTo(pivot)<right) {
+			if (left<right) {
 				swapi2(data,left,right);				
 			}
 		}
